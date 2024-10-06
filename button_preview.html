@@ -6,19 +6,14 @@
   const body = document.querySelector('body');
   body.style.backgroundColor = 'black';
 
-  const buttons = document.querySelectorAll('button');
-  buttons.forEach(button => {
-    Object.assign(button.style, BUTTON_STYLE_COMMON);
-  });
-
   const greenButton = document.getElementById('greenButton');
   const redButton = document.getElementById('redButton');
 
-  greenButton.style.backgroundColor = BUTTON_STYLE.GREEN_STATE.backgroundColor;
-  greenButton.style.color = BUTTON_STYLE.GREEN_STATE.textColor;
-  greenButton.innerHTML = BUTTON_STYLE.GREEN_STATE.text;
+  Object.assign(greenButton, BUTTON_STYLE.GREEN_STATE);
+  Object.assign(greenButton.style, BUTTON_STYLE.GREEN_STATE.style);
+  Object.assign(greenButton.style, BUTTON_STYLE_COMMON);
 
-  redButton.style.backgroundColor = BUTTON_STYLE.RED_STATE.backgroundColor;
-  redButton.style.color = BUTTON_STYLE.RED_STATE.textColor;
-  redButton.innerHTML = BUTTON_STYLE.RED_STATE.text;
+  Object.assign(redButton, BUTTON_STYLE.RED_STATE);
+  Object.assign(redButton.style, BUTTON_STYLE.RED_STATE.style);
+  Object.assign(redButton.style, BUTTON_STYLE_COMMON);
 </script>

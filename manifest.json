@@ -4,8 +4,13 @@
   "version": "1.0",
   "description": "A script that automates actions on YouTube video pages.",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
   "content_scripts": [
     {
       "matches": [

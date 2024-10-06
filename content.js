@@ -1,14 +1,18 @@
 // Define button states as constants
 const BUTTON_STYLE = {
   GREEN_STATE: {
-    backgroundColor: '#3a3a3a',
-    textColor: '#ffffff',
-    text: "Don't watch later"
+    style: {
+      backgroundColor: '#3a3a3a',
+      color: '#ffffff',
+    },
+    innerHTML: "Don't watch later"
   },
   RED_STATE: {
-    backgroundColor: '#ffffff',
-    textColor: '#000000',
-    text: 'Watch later'
+    style: {
+      backgroundColor: '#ffffff',
+      color: '#000000',
+    },
+    innerHTML: 'Watch later'
   }
 };
 
@@ -157,11 +161,10 @@ function addWatchLaterButton() {
     newButton.id = 'watchLaterButton'; // Button ID for reference
 
     const initialState = initialCheckboxState ? BUTTON_STYLE.GREEN_STATE : BUTTON_STYLE.RED_STATE;
-    newButton.innerText = initialState.text;
-    newButton.style.backgroundColor = initialState.backgroundColor;
-    newButton.style.color = initialState.textColor;
 
     // Apply common styles
+    Object.assign(newButton, initialState);
+    Object.assign(newButton.style, initialState.style);
     Object.assign(newButton.style, BUTTON_STYLE_COMMON);
 
     newButton.addEventListener('click', () => {
@@ -170,9 +173,9 @@ function addWatchLaterButton() {
         console.log('Watch later checkbox clicked');
         const isChecked = watchLaterCheckbox.getAttribute('aria-checked') === 'true';
         const newState = isChecked ? BUTTON_STYLE.GREEN_STATE : BUTTON_STYLE.RED_STATE;
-        newButton.style.backgroundColor = newState.backgroundColor;
-        newButton.style.color = newState.textColor;
-        newButton.innerText = newState.text;
+        Object.assign(newButton, newState);
+        Object.assign(newButton.style, newState.style);
+        Object.assign(newButton.style, BUTTON_STYLE_COMMON);
       } else {
         console.log('No Watch later checkbox available to click');
       }
@@ -195,7 +198,7 @@ function checkUrlChange() {
   const currentUrl = window.location.href;
   if (currentUrl.includes('youtube.com/watch?v=') && currentUrl !== previousUrl) {
     console.log('URL changed to a YouTube video');
-    previousUrl = currentUrl; // Update the previous URL
+    previousUrl = currentUrl;
     return true;
   }
   return false;
@@ -238,14 +241,31 @@ function executeSequence() {
   });
 }
 
+// Make executeSequence globally accessible
+window.executeSequence = executeSequence;
+
 // Start observing for the button load after a delay when the script runs
 setTimeout(() => {
   executeSequence();
 }, 2500); // Wait for 2.5 seconds before starting
 
-// Set an interval to check for URL changes every second
-setInterval(() => {
+// Create a MutationObserver to watch for URL changes
+const urlObserver = new MutationObserver(() => {
   if (checkUrlChange()) {
     executeSequence();
   }
-}, 1000); // Check for URL changes every second
+});
+
+// Configure the observer to watch for changes in the document's title
+urlObserver.observe(document.querySelector('title'), {
+  subtree: true,
+  characterData: true,
+  childList: true
+});
+
+// Initial check when the script runs
+setTimeout(() => {
+  if (checkUrlChange()) {
+    executeSequence();
+  }
+}, 2500);
