@@ -1,3 +1,31 @@
+// Define button states as constants
+const BUTTON_STYLE = {
+  GREEN_STATE: {
+    backgroundColor: '#3a3a3a',
+    textColor: '#ffffff',
+    text: "Don't watch later"
+  },
+  RED_STATE: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    text: 'Watch later'
+  }
+};
+
+// Define common button styles as a constant
+const BUTTON_STYLE_COMMON = {
+  display: 'inline-block',
+  outline: '0',
+  border: 'none',
+  cursor: 'pointer',
+  height: '32px',
+  padding: '0px 16px',
+  borderRadius: '50px',
+  fontSize: '12px',
+  fontWeight: '500',
+  marginRight: '10px'
+};
+
 // Variables to control the timing delays (in milliseconds)
 let dropdownDelay = 500; // Delay after opening the dropdown
 let checkboxDelay = 1000; // Delay before finding the checkbox
@@ -125,41 +153,26 @@ function clickCloseMoreActions() {
 // Function to add a new button to trigger the checkbox click
 function addWatchLaterButton() {
   return new Promise((resolve) => {
-    const greenStateButtonColor = '#3a3a3a';
-    const greenStateTextColor = '#ffffff';
-    const greenStateText = 'Don\'t watch later';
-
-    const redStateButtonColor = '#ffffff';
-    const redStateTextColor = '#000000';
-    const redStateText = 'Watch later';
-
     const newButton = document.createElement('button');
     newButton.id = 'watchLaterButton'; // Button ID for reference
 
-    newButton.innerText = initialCheckboxState ? greenStateText : redStateText;
-    newButton.style.backgroundColor = initialCheckboxState ? greenStateButtonColor : redStateButtonColor;
-    newButton.style.color = initialCheckboxState ? greenStateTextColor : redStateTextColor;
+    const initialState = initialCheckboxState ? BUTTON_STYLE.GREEN_STATE : BUTTON_STYLE.RED_STATE;
+    newButton.innerText = initialState.text;
+    newButton.style.backgroundColor = initialState.backgroundColor;
+    newButton.style.color = initialState.textColor;
 
-    // Apply styles
-    newButton.style.display = 'inline-block';
-    newButton.style.outline = '0';
-    newButton.style.border = 'none';
-    newButton.style.cursor = 'pointer';
-    newButton.style.height = '32px';
-    newButton.style.padding = '0px 16px';
-    newButton.style.borderRadius = '50px';
-    newButton.style.fontSize = '12px';
-    newButton.style.fontWeight = '500';
-    newButton.style.marginRight = '10px';
+    // Apply common styles
+    Object.assign(newButton.style, BUTTON_STYLE_COMMON);
 
     newButton.addEventListener('click', () => {
       if (watchLaterCheckbox) {
         watchLaterCheckbox.click();
         console.log('Watch later checkbox clicked');
         const isChecked = watchLaterCheckbox.getAttribute('aria-checked') === 'true';
-        newButton.style.backgroundColor = isChecked ? greenStateButtonColor : redStateButtonColor;
-        newButton.style.color = isChecked ? greenStateTextColor : redStateTextColor;
-        newButton.innerText = isChecked ? greenStateText : redStateText;
+        const newState = isChecked ? BUTTON_STYLE.GREEN_STATE : BUTTON_STYLE.RED_STATE;
+        newButton.style.backgroundColor = newState.backgroundColor;
+        newButton.style.color = newState.textColor;
+        newButton.innerText = newState.text;
       } else {
         console.log('No Watch later checkbox available to click');
       }

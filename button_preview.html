@@ -1,30 +1,24 @@
+<button id="greenButton"></button>
+<button id="redButton"></button>
+
 <script src="content.js"></script>
-<button onclick="addWatchLaterButton()">Click Me</button>
-<div id="buttons" style="margin: 20px;"></div>
+<script>
+  const body = document.querySelector('body');
+  body.style.backgroundColor = 'black';
 
-<button class="button-16">Button 16</button>
-<style>
-  .button-16 {
-    display: inline-block;
-    outline: 0;
-    border: none;
-    cursor: pointer;
-    height: 32px;
-    padding: 0px 16px;
-    border-radius: 50px;
-    background-color: #2222220d;
-    color: #222;
-    font-size: 12px;
-    font-weight: 500;
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => {
+    Object.assign(button.style, BUTTON_STYLE_COMMON);
+  });
 
-    &:hover {
-      background-color: #2222221a;
-    }
-  }
+  const greenButton = document.getElementById('greenButton');
+  const redButton = document.getElementById('redButton');
 
-  .example {
-    background-color: #ffffff;
-    background-color: #3a3a3a;
-    background-color: #000000;
-  }
-</style>
+  greenButton.style.backgroundColor = BUTTON_STYLE.GREEN_STATE.backgroundColor;
+  greenButton.style.color = BUTTON_STYLE.GREEN_STATE.textColor;
+  greenButton.innerHTML = BUTTON_STYLE.GREEN_STATE.text;
+
+  redButton.style.backgroundColor = BUTTON_STYLE.RED_STATE.backgroundColor;
+  redButton.style.color = BUTTON_STYLE.RED_STATE.textColor;
+  redButton.innerHTML = BUTTON_STYLE.RED_STATE.text;
+</script>
