@@ -4,6 +4,7 @@ let checkboxDelay = 1000; // Delay before finding the checkbox
 let watchLaterCheckbox; // Variable to store the checkbox element
 let initialCheckboxState; // Variable to store the initial state of the checkbox
 let previousUrl = window.location.href; // Store the initial URL
+let retryLimit = 3; // Number of retries for clicking the "More actions" button
 
 // Function to observe when the "More actions" button is loaded
 function observeForLoad() {
@@ -29,7 +30,7 @@ function observeForLoad() {
 }
 
 // Function to simulate a click on the "More actions" button
-function clickMoreActionsButton() {
+function clickMoreActionsButton(retries = 0) {
   return new Promise((resolve) => {
     const button = document.querySelector('button[aria-label="More actions"]');
     if (button) {
@@ -46,8 +47,8 @@ function clickMoreActionsButton() {
   });
 }
 
-// Function to click the "Save" item in the dropdown menu
-function clickSaveItem() {
+// Function to click the "Save" item in the dropdown menu, retrying if necessary
+function clickSaveItem(retries = 0) {
   return new Promise((resolve) => {
     const saveButton = [...document.querySelectorAll('ytd-menu-service-item-renderer')]
       .find(item => item.textContent.trim() === 'Save');
@@ -61,7 +62,22 @@ function clickSaveItem() {
       }, checkboxDelay);
     } else {
       console.log('Save button not found');
-      resolve(false);
+
+      // Close the "More actions" menu and retry clicking it if retries are available
+      if (retries < retryLimit) {
+        console.log(`Retrying clickMoreActionsButton (${retries + 1}/${retryLimit})`);
+
+        clickCloseMoreActions().then(() => {
+          setTimeout(() => {
+            clickMoreActionsButton(retries + 1)
+              .then(clickSaveItem.bind(null, retries + 1)) // Retry clickSaveItem
+              .then(resolve); // Continue if success
+          }, dropdownDelay);
+        });
+      } else {
+        console.log('Retry limit reached, Save button not found');
+        resolve(false);
+      }
     }
   });
 }
@@ -90,8 +106,8 @@ function findWatchLaterCheckbox() {
   });
 }
 
-// Function to click the close button
-function clickCloseButton() {
+// Function to click the close button in the "More actions" menu
+function clickCloseMoreActions() {
   return new Promise((resolve) => {
     const closeButton = document.querySelector('yt-icon-button#close-button button[aria-label="Cancel"]');
 
@@ -194,7 +210,7 @@ function executeSequence() {
     }
   }).then((result) => {
     if (result) {
-      return clickCloseButton();
+      return clickCloseMoreActions();
     } else {
       throw new Error('findWatchLaterCheckbox failed');
     }
@@ -202,7 +218,7 @@ function executeSequence() {
     if (result) {
       return addWatchLaterButton();
     } else {
-      throw new Error('clickCloseButton failed');
+      throw new Error('clickCloseMoreActions failed');
     }
   }).catch((error) => {
     console.error(error.message);
