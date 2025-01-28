@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "YouTube Video Script",
-  "version": "1.0",
-  "description": "A script that automates actions on YouTube video pages.",
+  "name": "YouTube Watch Later Manager",
+  "version": "1.0.0",
+  "description": "A lightweight extension that adds a convenient Watch Later toggle button to YouTube videos.",
   "permissions": [
     "activeTab",
     "scripting"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "action": {},
   "content_scripts": [
@@ -17,7 +17,7 @@
         "*://www.youtube.com/watch*"
       ],
       "js": [
-        "content.js"
+        "src/content.js"
       ]
     }
   ]

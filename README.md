@@ -1,30 +1,32 @@
 # YouTube Watch Later Manager
 
-A YouTube extension that adds a convenient button to quickly add/remove videos from your Watch Later playlist. (Currently in early development)
-
-⚠️ **Note:** This extension is currently in experimental phase and may have bugs. Contributions and help with development are very welcome!
+A simple Chrome extension that adds a convenient button to quickly add/remove videos from your Watch Later playlist.
 
 ![Extension Usage Example](extension-usage-example.gif)
 
 ## Features
-
-- Quick toggle button in the YouTube navigation bar
-- Easily add videos to Watch Later playlist
-- Quickly remove videos from Watch Later playlist
+- One-click toggle button in the YouTube navigation bar
+- Works automatically on video pages
 
 ## Installation
+
+### Chrome Web Store
+*Coming soon*
 
 ### Manual Installation (Developer Mode)
 1. Download or clone this repository
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable "Developer mode" in the top right corner
-4. Click "Load unpacked" button
-5. Select the folder containing the extension files
+4. Click "Load unpacked" and select the extension directory
 
-## Contributing
+## Development
+This is a personal project in active development. Feel free to:
+- Report issues
+- Suggest features
+- Submit pull requests
 
-This is an open source project and we'd love your help!
-Please feel free to:
-1. Open issues
-2. Submit pull requests
-3. Suggest improvements
+## Privacy
+This extension:
+- Only runs on YouTube video pages
+- Doesn't collect any user data
+- Doesn't communicate with external servers
