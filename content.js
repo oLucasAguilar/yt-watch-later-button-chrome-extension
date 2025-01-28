@@ -157,6 +157,13 @@ function clickCloseMoreActions() {
 // Function to add a new button to trigger the checkbox click
 function addWatchLaterButton() {
   return new Promise((resolve) => {
+    // Check if the button already exists
+    if (document.getElementById('watchLaterButton')) {
+      console.log('Watch Later button already exists');
+      resolve(false);
+      return;
+    }
+
     const newButton = document.createElement('button');
     newButton.id = 'watchLaterButton'; // Button ID for reference
 
